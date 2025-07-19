@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('url', 250);
             $table->timestamps();
         });
     }

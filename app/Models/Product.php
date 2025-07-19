@@ -11,14 +11,15 @@ class Product extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'name',
         'description',
         'price',
         'slug',
-        'image_id',
         'category_id',
         'status',
+        'stock'
     ];
 
     protected static function boot()
@@ -36,5 +37,15 @@ class Product extends Model
                 $product->slug = Str::slug($product->name);
             }
         });
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function image()
+    {
+        return $this->hasMany(Product_image::class);
     }
 }

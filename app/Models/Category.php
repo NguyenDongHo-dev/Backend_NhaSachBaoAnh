@@ -12,9 +12,7 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-        'slug',
         'status',
-        'parent_id'
     ];
 
     protected static function boot()
@@ -32,5 +30,10 @@ class Category extends Model
                 $category->slug = Str::slug($category->name);
             }
         });
+    }
+
+    public function product()
+    {
+        return $this->hasMany(Product::class);
     }
 }

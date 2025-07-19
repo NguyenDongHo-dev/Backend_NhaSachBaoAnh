@@ -19,6 +19,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->string("slug");
+            $table->integer('stock');
             $table->boolean('status')->default(true);
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
