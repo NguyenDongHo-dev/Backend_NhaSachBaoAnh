@@ -13,22 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('riviews', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id")->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained()->onDelete("cascade");
             $table->integer('rating')->nullable();
             $table->string('comment')->nullable();
-            $table->boolean('status');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+
     public function down()
     {
         Schema::dropIfExists('reviews');

@@ -32,7 +32,15 @@ class User extends Authenticatable implements JWTSubject
         'role'
     ];
 
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
 
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
 
     //token
     public function getJWTIdentifier()

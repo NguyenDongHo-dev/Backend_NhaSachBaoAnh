@@ -11,7 +11,6 @@ class CartRequest extends BaseRequest
 
         if ($this->isMethod('post')) {
             return [
-                'user_id' => 'nullable|exists:users,id',
                 'product_id' => 'nullable|exists:products,id',
                 'quantity' => 'required|numeric|min:0',
             ];

@@ -20,6 +20,7 @@ class Order extends Model
         'status',
         'user_noteid',
         'paid_at',
+        'note'
     ];
 
     protected static function boot()
@@ -34,5 +35,15 @@ class Order extends Model
                 $order->order_number = $random;
             }
         });
+    }
+
+    public function order_items()
+    {
+        return $this->hasMany(Order_item::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

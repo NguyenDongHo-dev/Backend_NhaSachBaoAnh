@@ -14,12 +14,14 @@ class ProductController extends Controller
 
     public function index()
     {
-        $product = Product::with('image')->get();
+        $products = Product::with('image')->orderBy('created_at', 'desc')->get();
+
+
 
         return response()->json([
             'success' => true,
             'message' => 'Lay san pham thanh cong',
-            'data' => ProductResource::collection($product),
+            'data' => ProductResource::collection($products),
         ]);
     }
 
@@ -55,7 +57,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('image', 'category')->findOrFail($id);
+        $product = Product::with('image', 'category', 'reviews')->findOrFail($id);
 
         return response()->json([
             'success' => true,
