@@ -13,21 +13,22 @@ class OrderRequest extends BaseRequest
 
         if ($this->isMethod('post')) {
             return [
-                'payment_method' => 'required|string',
                 'products' => 'required|array',
-
+                'shipping_address' => 'required|string',
+                'recipient_phone' => 'required|string',
+                'order_recipient_name' => 'required|string',
+                'price_shipping' => 'required|string',
+                'delivery_method' => 'required|string',
             ];
         }
 
-
-        if ($this->isMethod('put') && $orderId) {
-            return [
-                'payment_method' => 'sometimes|string',
-                'notes' => 'sometimes|string',
-                'status' => 'sometimes|string',
-                'paid_at' => 'nullable|date_format:Y-m-d'
-            ];
-        }
+        // if ($this->isMethod('put') && $orderId) {
+        //     return [
+        //         'notes' => 'sometimes|string',
+        //         'status' => 'sometimes|string',
+        //         'paid_at' => 'nullable|date_format:Y-m-d'
+        //     ];
+        // }
         return [];
     }
 }

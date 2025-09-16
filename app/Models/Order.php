@@ -14,13 +14,22 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'payment_method',
         'order_number',
+        'shipping_address',
+        'recipient_phone',
+        'order_recipient_name',
+        'delivery_method',
         'total_price',
+        'price_shipping',
+        'total_all',
         'status',
-        'user_noteid',
+        'notes',
+        'paid',
         'paid_at',
-        'note'
+    ];
+
+    protected $casts = [
+        'paid_at' => 'datetime',
     ];
 
     protected static function boot()

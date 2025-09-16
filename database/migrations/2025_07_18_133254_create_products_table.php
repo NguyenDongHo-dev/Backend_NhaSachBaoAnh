@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->longText('description')->nullable();
             $table->longText('short_description')->nullable();
-            $table->string('discount', 10)->default(0);
-            $table->decimal('price', 10, 2);
+            $table->integer('discount')->default(0);
             $table->string("slug");
+            $table->integer('price');
             $table->integer('stock');
+            $table->integer('sold')->nullable();
             $table->boolean('status')->default(true);
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();

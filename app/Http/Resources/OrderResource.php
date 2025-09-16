@@ -11,29 +11,29 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user_id' => $this->user_id,
             'order_number' => $this->order_number,
-            'payment_method' => $this->payment_method,
-            'total_price' => number_format($this->total_price, 0, ',', '.'),
+            'shipping_address' => $this->shipping_address,
+            'recipient_phone' => $this->recipient_phone,
+            'order_recipient_name' => $this->order_recipient_name,
+            'delivery_method' => $this->delivery_method,
+            'price_shipping' => $this->price_shipping,
+            'total_all' => $this->total_all,
+            'total_price' => $this->total_price,
             'status' => $this->status,
-            'note' => $this->note,
-            'paid_at ' => $this->paid_at,
+            'notes' => $this->notes,
+            'paid' => $this->paid,
+            'paid_at' => $this->paid_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user' => [
-                'id' => $this->user->id,
-                'name' => $this->user->name,
-                'email' => $this->user->email,
-                'address' => $this->user->address,
-                'phone' => $this->user->phone,
-
-            ],
             'order_items' => $this->order_items->map(function ($item) {
                 return [
                     'quantity' => $item->quantity,
-                    'price' => number_format($item->price, 0, ',', '.'),
+                    'price' => $item->price,
                     'product' => [
                         'id' => $item->product->id,
                         'name' => $item->product->name,
+                        'stock' => $item->product->stock,
                         'image' => $item->product->image->pluck('url'),
                     ],
                 ];

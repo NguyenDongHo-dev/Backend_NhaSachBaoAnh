@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RefreshTokenController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 
 use Illuminate\Support\Facades\Route;
+use Tymon\JWTAuth\Http\Middleware\RefreshToken;
 
 //user
 Route::prefix('user')->group(function () {
@@ -17,23 +18,25 @@ Route::prefix('user')->group(function () {
 
 
     Route::middleware(['admin_jwt'])->group(function () {
+        Route::put('/updateByAdmin/{id}', [UserController::class, 'updateByAdmin']);
         Route::get('/allUser', [UserController::class, 'index']);
         Route::delete('/delete/{id}', [UserController::class, 'delete']);
-        Route::get('/details/{id}', [UserController::class, 'details']);
+        Route::post('/createUser', [UserController::class, 'createUser']);
+        Route::get('/detailsByAdmin/{id}', [UserController::class, 'detailsByAdmin']);
     });
 
-    Route::middleware(['user_jwt'])->group(function () {
+    Route::middleware(['user_jwt', 'jwt.auth'])->group(function () {
         Route::put('/update/{id}', [UserController::class, 'update']);
         Route::post('/logout', [UserController::class, 'logout']);
-        Route::get('/{id}', [UserController::class, 'detailsMe']);
+        Route::get('/details', [UserController::class, 'details']);
     });
 });
 
 //category
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
-    Route::get('/{id}', [CategoryController::class, 'show']);
-    Route::get('/type/{id}', [CategoryController::class, 'type']);
+    Route::get('/{slug}', [CategoryController::class, 'show']);
+    Route::get('/type/{slug}', [CategoryController::class, 'type']);
 
 
     Route::middleware(['admin_jwt'])->group(function () {
@@ -46,7 +49,7 @@ Route::prefix('category')->group(function () {
 //product
 Route::prefix('product')->group(function () {
     Route::get('/', [ProductController::class, 'index']);
-    Route::get('/{id}', [ProductController::class, 'show']);
+    Route::get('/{slug}', [ProductController::class, 'show']);
 
 
     Route::middleware(['admin_jwt'])->group(function () {
@@ -56,14 +59,7 @@ Route::prefix('product')->group(function () {
     });
 });
 
-//cart
-Route::prefix('cart')->group(function () {
-    Route::middleware(['user_jwt'])->group(function () {
-        Route::get('/{id}', [CartController::class, 'index']);
-        Route::post('/{id}', [CartController::class, 'store']);
-        Route::delete('/{id}', [CartController::class, 'destroy']);
-    });
-});
+
 
 //wishlist
 Route::prefix('wishlist')->group(function () {
@@ -83,9 +79,6 @@ Route::prefix('review')->group(function () {
 
     Route::get('/{id}', [ReviewController::class, 'index']);
 
-
-
-
     Route::middleware(['jwt.auth'])->group(function () {
         Route::post('/', [ReviewController::class, 'store']);
         Route::put('/{id}', [ReviewController::class, 'update']);
@@ -100,12 +93,15 @@ Route::middleware(['jwt.auth'])->prefix('order')->group(function () {
 
     Route::middleware(['admin_jwt'])->group(function () {
         Route::get('/allOrder', [OrderController::class, 'allOrder']);
+        Route::get('/details/{id}', [OrderController::class, 'detailsByAdnin']);
         Route::put('/{id}', [OrderController::class, 'update']);
-        Route::delete('/deteleAdmin/{id}', [OrderController::class, 'deteleAdmin']);
+        Route::put('/cancelled/{id}', [OrderController::class, 'cancelled']);
     });
 
     Route::get('/', [OrderController::class, 'index']);
     Route::get('/{id}', [OrderController::class, 'detailOrder']);
     Route::post('/', [OrderController::class, 'store']);
-    Route::delete('/{id}', [OrderController::class, 'destroy']);
+    Route::delete('/{id}', [OrderController::class, 'updateToCancelled']);
 });
+
+Route::post('/refresh-token', [RefreshTokenController::class, 'refresh']);

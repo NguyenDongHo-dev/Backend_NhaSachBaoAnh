@@ -15,12 +15,16 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
+        'short_description',
+        'discount',
         'price',
         'slug',
         'category_id',
         'status',
+        'sold',
         'stock'
     ];
+
 
     protected static function boot()
     {
@@ -48,8 +52,6 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
-
-
 
     public function image()
     {

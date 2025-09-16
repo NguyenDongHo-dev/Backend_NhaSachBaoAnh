@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'role',
-        'phine',
+        'phone',
         'address',
         'email',
         'password',
@@ -29,7 +29,6 @@ class User extends Authenticatable implements JWTSubject
 
     protected $hidden = [
         'password',
-        'role'
     ];
 
     public function order()

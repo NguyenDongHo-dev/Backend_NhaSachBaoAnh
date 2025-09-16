@@ -20,15 +20,15 @@ class UserRequest extends BaseRequest
 
         if ($this->isMethod('put')) {
             return [
-                'name' => 'sometimes|string|max:255',
+                'name' => 'sometimes|max:255',
                 'email' => [
                     'sometimes',
                     'email',
                     Rule::unique('users', 'email')->ignore($userId, 'id'),
 
                 ],
-                'address' => 'sometimes|string|max:255',
-                'phone' => 'sometimes|string|max:15',
+                'role' => 'sometimes|in:0,1',
+
             ];
         }
 

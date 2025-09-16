@@ -16,11 +16,17 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->char('payment_method', 200);
             $table->char("order_number", 10)->nullable()->unique();
-            $table->decimal("total_price", 10, 2);
+            $table->char('shipping_address', 200);
+            $table->char('recipient_phone', 200);
+            $table->char('order_recipient_name', 200);
+            $table->char('delivery_method', 200);
+            $table->integer("price_shipping");
+            $table->integer("total_price");
+            $table->bigInteger("total_all");
             $table->string("status", 100)->default("padding");
-            $table->string("note")->nullable();
+            $table->string("notes")->nullable();
+            $table->boolean("paid")->default(false);
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });

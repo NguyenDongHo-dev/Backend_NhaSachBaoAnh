@@ -10,16 +10,22 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ReviewController extends Controller
 {
-    public function index($id)
+    public function index(Request $request, $id)
     {
-
-
-        $dataReview = Review::with('user')->where("product_id", $id)->get();
+        // true =1
+        $status = 1;
+        $limit = $request->input("limit", 10);
+        $q = Review::with('user')->where("product_id", $id)->where("status", $status)->orderBy('created_at', 'desc');
+        $dataReview = $q->paginate($limit);
 
         return response()->json([
             "success" => true,
             "message" => 'Lay tat ca review trong san pham thanh cong',
             'data' => ReviewResource::collection($dataReview),
+            'total' => $dataReview->total(),
+            'limit' => $dataReview->perPage(),
+            'current_page' => $dataReview->currentPage(),
+            'last_page' => $dataReview->lastPage(),
         ]);
     }
 
@@ -39,15 +45,17 @@ class ReviewController extends Controller
         if ($isUserReview) {
             return response()->json([
                 'success' => false,
-                'message' => "Ban da danh gia san pham roi",
+                'message' => "Bạn đã đánh giá sản phẩm này rồi",
             ]);
         }
 
-        Review::create($data);
+        $data = Review::create($data);
 
         return response()->json([
             'success' => true,
             'message' => "tao review thanh cong",
+            'data' => new ReviewResource($data)
+
         ]);
     }
 
