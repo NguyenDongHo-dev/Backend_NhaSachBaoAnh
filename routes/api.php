@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RefreshTokenController;
@@ -105,3 +106,10 @@ Route::middleware(['jwt.auth'])->prefix('order')->group(function () {
 });
 
 Route::post('/refresh-token', [RefreshTokenController::class, 'refresh']);
+
+
+Route::middleware(['admin_jwt'])->group(
+    function () {
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+    }
+);
