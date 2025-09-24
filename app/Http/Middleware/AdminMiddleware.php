@@ -13,6 +13,7 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        $role = null;
         try {
             $payload = JWTAuth::parseToken()->getPayload();
 

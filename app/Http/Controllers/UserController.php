@@ -173,13 +173,13 @@ class UserController extends Controller
         ], 200)->cookie(
             'refresh_token',
             $refreshToken,
-            60 * 24 * 7,  // 7 ngày
+            60 * 24 * 7,
             '/',
-            'localhost',  // không port, chỉ localhost
-            false,        // Secure=false khi dev HTTP
-            true,         // HttpOnly
+            'localhost',
             false,
-            'Lax'        // SameSite=None để cross-site
+            true,
+            false,
+            'Lax'
         );
     }
 

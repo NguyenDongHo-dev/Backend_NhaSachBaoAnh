@@ -64,8 +64,9 @@ Route::prefix('product')->group(function () {
 
 //wishlist
 Route::prefix('wishlist')->group(function () {
-    Route::middleware(['user_jwt'])->group(function () {
+    Route::middleware(['user_jwt', 'jwt.auth'])->group(function () {
         Route::get('/{id}', [WishlistController::class, 'index']);
+        Route::get('/product/{id}', [WishlistController::class, 'productOfWishlist']);
         Route::post('/{id}', [WishlistController::class, 'store']);
         Route::delete('/{id}', [WishlistController::class, 'destroy']);
     });
