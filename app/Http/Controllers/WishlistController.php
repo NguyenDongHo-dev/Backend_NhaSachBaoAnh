@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WishlistRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -64,17 +65,28 @@ class WishlistController extends Controller
         ]);
     }
 
-    public function productOfWishlist()
+    public function productOfWishlist(Request $request)
     {
-        $user = JWTAuth::user();
-        $wishlist = Wishlist::with('product.image', 'product.category')->where('user_id', $user->id)->get();
+        $limit = $request->input("limit", 16);
 
-        $products = $wishlist->pluck('product');
+        $user = JWTAuth::user();
+
+        $products = Product::with('image', 'category')
+            ->whereIn('id', function ($query) use ($user) {
+                $query->select('product_id')
+                    ->from('wishlists')
+                    ->where('user_id', $user->id);
+            })
+            ->paginate($limit);
 
         return response()->json([
             'success' => true,
             'message' => "lay san pham yeu thich thanh cong",
             'data' =>  ProductResource::collection($products),
+            'total' => $products->total(),
+            'per_page' => $products->perPage(),
+            'current_page' => $products->currentPage(),
+            'last_page' => $products->lastPage(),
         ]);
     }
 
