@@ -19,13 +19,16 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->longText('short_description')->nullable();
             $table->integer('discount')->default(0);
-            $table->string("slug");
-            $table->integer('price');
-            $table->integer('stock');
-            $table->integer('sold')->nullable();
-            $table->boolean('status')->default(true);
+            $table->string("slug")->unique();
+            $table->integer('price')->index();
+            $table->unsignedInteger('stock')->index();
+            $table->unsignedInteger('sold')->nullable();
+            $table->boolean('status')->default(true)->index();
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->index('created_at');
+
+            $table->fullText(['name', 'description', 'short_description']);
         });
     }
 

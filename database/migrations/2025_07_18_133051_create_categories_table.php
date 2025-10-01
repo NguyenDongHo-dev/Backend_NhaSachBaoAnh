@@ -16,17 +16,13 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->char('name', 200);
-            $table->char('slug', 200);
-            $table->boolean("status")->default(true);
+            $table->char('slug', 200)->unique();
+            $table->boolean("status")->default(true)->index();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+
     public function down()
     {
         Schema::dropIfExists('categories');

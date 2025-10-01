@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId("user_id")->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained()->onDelete("cascade");
-            $table->integer('rating')->nullable();
+            $table->tinyInteger('rating')->unsigned();
             $table->string('comment')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(true)->index();
             $table->timestamps();
+
+            $table->unique(['product_id', 'user_id']);
         });
     }
 

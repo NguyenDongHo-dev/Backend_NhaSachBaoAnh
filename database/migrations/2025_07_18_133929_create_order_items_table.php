@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('price');
             $table->integer("quantity");
             $table->timestamps();
+
+            $table->index(['order_id', 'product_id']);
         });
     }
 
